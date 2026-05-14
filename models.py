@@ -9,7 +9,7 @@ class Product:
         self.tovarho = []
     
     
-    def info(self):
+    def __str__(self):
         
         return (
             f"Товар: {self.name}\n"
@@ -54,14 +54,14 @@ class Product:
         
         return (
             f"{dona} dona xarid shud!\n"
-            f"Jam: {total} somoni"
+            f"Hamagi: {total} somoni"
         )
 
 
 
 pr = Product("seb", 5, 55)
 
-print(pr.info())
+print(pr)
 print()
 
 name = input("nom: ")
