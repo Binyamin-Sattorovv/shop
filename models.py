@@ -1,21 +1,79 @@
-class Product:                                  #class
-    def __init__(self, name, price, quantity): #inisiliazator
-        self.name = name                        #atributi
-        self.price = price                       #atributi
-        self.quantity = quantity                 #atributi
+class Product:
+    
+    def __init__(self, name, price, dona):
         
+        self.name = name
+        self.price = price
+        self.dona = dona
         
-    def info(self):                             #metodi classa 
-        return f"Tovar: {self.name}, Narx: {self.price} somoni, Dona: {self.quantity}"
+        self.tovarho = []
     
     
-    def buy(self, name, quantity):           #metodi classa
+    def info(self):
         
-        if name == self.name:
-            print("Chand dona mexoxed xared: ")
-            if quantity <= self.quantity:
-                self.quantity -= quantity
-                print(f"{self.name}, {quantity}, dona xarida shud!")
-                return
-        return 
+        return (
+            f"Товар: {self.name}\n"
+            f"Цена: {self.price} сомони\n"
+            f"Количество: {self.dona}"
+        )
     
+     
+    def add_tovar(self, name: str, dona: int):
+       
+       tovar = list(zip(name, dona))
+       
+       self.tovarho.append(tovar)
+       print("Tovarho vorid karda shud!")
+       
+    
+    def remove_dona(self, dona: int):
+        
+        if dona > self.dona:
+            return "In qadar mahsulot nest!"
+        
+        self.dona -= dona
+        return f"{dona} dona udalit karda shud!"
+    
+    
+    def is_available(self):
+        
+        return f"{self.dona}, dona hast" if self.dona > 0 else "Nest"
+    
+    
+    def buy(self, name: str, dona: int):
+        
+        if name != self.name:
+            return "Nodurust!"
+        
+        if dona > self.dona:
+            return "Kolichestvo nest!"
+        
+        self.dona -= dona
+        
+        total = dona * self.price
+        
+        return (
+            f"{dona} dona xarid shud!\n"
+            f"Jam: {total} somoni"
+        )
+
+
+
+pr = Product("seb", 5, 55)
+
+print(pr.info())
+print()
+
+name = input("nom: ")
+dona = input("dona: ")
+print(pr.add_tovar(name, dona))
+print()
+
+print(pr.remove_dona(4))
+print()
+
+print(pr.is_available())
+print()
+
+print(pr.buy("seb", 12))
+
