@@ -64,7 +64,7 @@ class Store:
             if product.name.lower() == name.lower():
                 return (
                     f"\nYoft shud!\n"
-                    "{product}"
+                    f"{product}"
                 )
 
     def buy(self, name: str, dona: int):
@@ -78,7 +78,7 @@ class Store:
 
                 product.dona -= dona
 
-                total = dona * product.price
+                total = dona * product.get_price()
 
                 return (
                     f"{dona} шт. куплено!\n"

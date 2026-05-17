@@ -1,5 +1,5 @@
 from models.store import Store
-
+from models.product import Product
 
 st = Store("Магазин фруктов")       #obekt classa
 
