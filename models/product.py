@@ -1,66 +1,86 @@
-class Product:               #class
+class Product:
 
-    def __init__(self, name, price, dona):      #inisilizator
+    total_products = 0
 
-        self.name = name       #atribut
-        
+    def __init__(self, name: str, price: int, dona: int):
+
+        self.name = name
+
         self.__price = 0
         self.__dona = 0
-        
+
         self.price = price
         self.dona = dona
-        
-        
-        # Narx
+
+        Product.total_products += 1
+
+    # CLASSMETHOD
+
+    @classmethod
+    def from_dict(cls, data):
+
+        return cls(
+            data["name"],
+            data["price"],
+            data["dona"]
+        )
+
+    # STATICMETHOD
+
+    @staticmethod
+    def validate_discount(discount):
+
+        if discount < 0 or discount > 100:
+            return "Discount xato!"
+
+        return "Discount durust!"
+
+    # PRICE
+
     @property
-    
     def price(self):
-        
+
         return self.__price
-    
-    
+
     @price.setter
-    
     def price(self, new_price):
-        
+
         if int(new_price) < 0:
-            
-            print("Narx boyad az nol kalon boshad!")
-            
+            print("Narx naboyad manfi boshad!")
             return
-        
+
         self.__price = int(new_price)
-        
-        print("Narxi nav vorid karda shud!")
-        
-        
-        # Dona
+
+    # DONA
+
     @property
-        
     def dona(self):
-        
+
         return self.__dona
-    
-    
+
     @dona.setter
-    
     def dona(self, new_dona):
-        
+
         if int(new_dona) < 0:
-            
-            print("Dona naboyad az nol xurd boshad!")
-            
+            print("Dona naboyad manfi boshad!")
             return
-        
+
         self.__dona = int(new_dona)
-        print("Dona ivaz larda shud!")
-    
-    
+
+    # TO DICT
+
+    def to_dict(self):
+
+        return {
+            "name": self.name,
+            "price": self.price,
+            "dona": self.dona
+        }
+
     def __str__(self):
 
         return (
-            f"Товар: {self.name}\n"
-            f"Цена: {self.price} сомони\n"
-            f"Количество: {self.dona}\n"
+            f"Name: {self.name}\n"
+            f"Narx: {self.price} somoni\n"
+            f"Dona: {self.dona}\n"
         )
-
