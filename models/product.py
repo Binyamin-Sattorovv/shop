@@ -76,6 +76,12 @@ class Product:
             "price": self.price,
             "dona": self.dona
         }
+        
+        
+    def action(self):
+        
+        return "Action xoli!"
+        
 
     def __str__(self):
 
@@ -84,3 +90,5 @@ class Product:
             f"Narx: {self.price} somoni\n"
             f"Dona: {self.dona}\n"
         )
+
+
