@@ -44,6 +44,7 @@ st.add_tovar(p1)
 st.add_tovar(p2)
 st.add_tovar(p3)
 
+
 print()
 
 
