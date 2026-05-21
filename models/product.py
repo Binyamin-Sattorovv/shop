@@ -1,3 +1,14 @@
+# LOGGER MIXIN
+
+class LoggerMixin:
+
+    def log(self, message):
+
+        print(f"[LOG]: {message}")
+
+
+# PRODUCT
+
 class Product:
 
     total_products = 0
@@ -14,8 +25,6 @@ class Product:
 
         Product.total_products += 1
 
-    # CLASSMETHOD
-
     @classmethod
     def from_dict(cls, data):
 
@@ -25,8 +34,6 @@ class Product:
             data["dona"]
         )
 
-    # STATICMETHOD
-
     @staticmethod
     def validate_discount(discount):
 
@@ -34,8 +41,6 @@ class Product:
             return "Discount xato!"
 
         return "Discount durust!"
-
-    # PRICE
 
     @property
     def price(self):
@@ -46,12 +51,11 @@ class Product:
     def price(self, new_price):
 
         if int(new_price) < 0:
+
             print("Narx naboyad manfi boshad!")
             return
 
         self.__price = int(new_price)
-
-    # DONA
 
     @property
     def dona(self):
@@ -62,33 +66,141 @@ class Product:
     def dona(self, new_dona):
 
         if int(new_dona) < 0:
+
             print("Dona naboyad manfi boshad!")
             return
 
         self.__dona = int(new_dona)
 
-    # TO DICT
-
     def to_dict(self):
 
         return {
+            "type": "product",
             "name": self.name,
             "price": self.price,
             "dona": self.dona
         }
-        
-        
-    def action(self):
-        
-        return "Action xoli!"
-        
+
+    def deliver(self):
+
+        return "Action nest!"
+    
+    
+    def shipping_price(self):
+
+        return 0
+    
 
     def __str__(self):
 
         return (
+            f"PRODUCT\n"
+            f"\n"
             f"Name: {self.name}\n"
             f"Narx: {self.price} somoni\n"
             f"Dona: {self.dona}\n"
         )
 
 
+# DIGITAL PRODUCT
+
+class DigitalProduct(Product):
+
+    def __init__(
+        self,
+        name,
+        price,
+        dona,
+        file_size
+    ):
+
+        super().__init__(name, price, dona)
+
+        self.file_size = file_size
+
+    def deliver(self):
+
+        return (
+            f"{self.name} download shuda istodaast!\n"
+            f"File size: {self.file_size} MB"
+        )
+
+    def to_dict(self):
+
+        return {
+            "type": "digital",
+            "name": self.name,
+            "price": self.price,
+            "dona": self.dona,
+            "file_size": self.file_size
+        }
+        
+        
+    def shipping_price(self):
+
+        return 0
+    
+
+    def __str__(self):
+
+        return (
+            f"DIGITAL PRODUCT\n"
+            f"\n"
+            f"Name: {self.name}\n"
+            f"Price: {self.price}\n"
+            f"Dona: {self.dona}\n"
+            f"File Size: {self.file_size} MB\n"
+        )
+
+
+# PHYSICAL PRODUCT
+
+class PhysicalProduct(Product):
+
+    def __init__(
+        self,
+        name,
+        price,
+        dona,
+        weight
+    ):
+
+        super().__init__(name, price, dona)
+
+        self.weight = weight
+
+    def deliver(self):
+
+        shipping = self.weight * 10
+
+        return (
+            f"{self.name},dostavka shuda istodaast!\n"
+            f"Narxi dostavka: {shipping} somoni\n"
+        )
+
+    def to_dict(self):
+
+        return {
+            "type": "physical",
+            "name": self.name,
+            "price": self.price,
+            "dona": self.dona,
+            "weight": self.weight
+        }
+        
+        
+    def shipping_price(self):
+
+        return self.weight * 10
+
+
+    def __str__(self):
+
+        return (
+            f"PHYSICAL PRODUCT\n"
+            f"\n"
+            f"Name: {self.name}\n"
+            f"Price: {self.price}\n"
+            f"Dona: {self.dona}\n"
+            f"Weight: {self.weight} KG\n"
+        )

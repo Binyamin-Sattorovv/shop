@@ -1,116 +1,19 @@
 import json
-from models.product import Product
-from abc import ABC, abstractmethod
+
+from models.product import (
+    Product,
+    DigitalProduct,
+    PhysicalProduct,
+    LoggerMixin,
+)
 
 
-class DigitalProduct(Product):
-    
-    def __init__(self, name, price, dona, file_size):
-        
-        super().__init__(name, price, dona)
-        
-        self.file_size = file_size
-        
-    
-    def action(self):
-        
-        return (
-            f"{self.name}: download shud!\n"
-            f"File size: {self.file_size}, mb\n"
-        )
-        
-        
-    def __str__(self):
-            
-        return (
-            
-            f"DIIGTAL PRODUCT\n"
-            f"\n"
-            f"Name: {self.name}\n"
-            f"Price: {self.price}\n"
-            f"Dona: {self.dona}\n"
-            f"File size: {self.file_size}\n"
-        )
-        
-        
-    
-class PyshicalProduct(Product):
-    
-    def __init__(self, name, price, dona, weight):
-        
-        super().__init__(name, price, dona)
-        
-        self.weight = weight
-        
-        
-    def action(self):
-        
-        shipping =  self.weight * 10
-
-        
-        return (
-            f"{self.name}, dostavka shuda istodaast!\n"
-            f"Narxi dostavka: {shipping}, somoni\n"
-        )
-        
-        
-    def __str__(self):
-        
-        return (
-            
-            f"PYSHICALPRODUCT\n"
-            f"\n"
-            f"Name: {self.name}\n"
-            f"Price: {self.price}\n"
-            f"Dona: {self.dona}\n"
-            f"Vazn: {self.weight}, kg\n"
-        )
-        
-           
-class Payment(ABC):
-    
-    @abstractmethod
-    def pay(self, amount):
-        pass 
-    
-    
-
-class ClickPayment(Payment):
-    
-    def pay(self, amount):
-        return (
-            f"CashPayment kabul shud!\n"
-            f"Summa: {amount}, somoni!\n"
-        )
-        
-
-class CardPayment(Payment):
-    
-    def pay(self, amount):
-        return (
-            f"CardPayment kabul shud!\n"
-            f"Summa: {amount}, somoni!\n"
-        )
-    
-
-class CashPayment(Payment):
-    
-    def pay(self, amount):
-        return (
-            f"CashPayment kabul shud!\n"
-            f"Summa: {amount}, somoni!\n"
-        )
-        
-        
-        
-class Store:
+class Store(LoggerMixin):
 
     def __init__(self, name):
 
         self.name = name
         self.products = []
-
-    # ADD
 
     def add_tovar(self, product):
 
@@ -121,9 +24,7 @@ class Store:
 
         self.products.append(product)
 
-        print(f"{product.name} vorid karda shud!")
-
-    # REMOVE
+        self.log(f"{product.name} added!")
 
     def remove_tovar(self, name):
 
@@ -133,13 +34,12 @@ class Store:
 
                 self.products.remove(product)
 
-                print(f"{name} udalil shud!")
+                self.log(f"{name} removed!")
 
                 return
 
         return "Tovar yoft nashud!"
-
-    # LIST
+    
 
     def list_products(self):
 
@@ -148,8 +48,6 @@ class Store:
 
         for product in self.products:
             print(product)
-
-    # SEARCH
 
     def search_tovar(self, name):
 
@@ -164,24 +62,7 @@ class Store:
 
         return "Tovar yoft nashud!"
 
-    # AVAILABLE
-
-    def is_available(self, name):
-
-        for product in self.products:
-
-            if product.name.lower() == name.lower():
-
-                if product.dona > 0:
-                    return "Dar anbor hast!"
-
-                return "Tamom shud!"
-
-        return "Tovar yoft nashud!"
-
-    # BUY
-
-    def buy(self, name, dona, method_payment):
+    def buy(self, name, dona, payment_method):
 
         for product in self.products:
 
@@ -193,20 +74,21 @@ class Store:
                 product.dona -= dona
 
                 total = dona * product.price
-                result_method = method_payment.pay(total)
-                delivery = product.action()
-                
+
+                payment_result = payment_method.pay(total)
+
+                shiping_price = product.shipping_price()
+
+                self.log(f"{product.name} sold!")
 
                 return (
-                    f"{dona} dona {product.name}, xarid shud!\n"
-                    f"Summa: {total} somoni"
-                    f"Result: {result_method}\n"
-                    f"Delivery: {delivery}\n"
+                    f"{dona} dona {product.name} xarid shud!\n"
+                    f"\n"
+                    f"{payment_result}\n"
+                    f"{shiping_price}\n"
                 )
 
         return "Tovar yoft nashud!"
-
-    # SAVE JSON
 
     def save_products(self):
 
@@ -225,9 +107,7 @@ class Store:
                 ensure_ascii=False
             )
 
-        print("Products saved!")
-
-    # LOAD JSON
+        self.log("Products saved!")
 
     def load_products(self):
 
@@ -239,9 +119,112 @@ class Store:
 
         for product_data in data:
 
-            product = Product.from_dict(product_data)
+            if product_data["type"] == "product":
+
+                product = Product.from_dict(product_data)
+
+            elif product_data["type"] == "digital":
+
+                product = DigitalProduct(
+                    product_data["name"],
+                    product_data["price"],
+                    product_data["dona"],
+                    product_data["file_size"]
+                )
+
+            elif product_data["type"] == "physical":
+
+                product = PhysicalProduct(
+                    product_data["name"],
+                    product_data["price"],
+                    product_data["dona"],
+                    product_data["weight"]
+                )
 
             self.products.append(product)
 
-        print("Products loaded!")
+        self.log("Products loaded!")
+        
+    
 
+class CartItem:
+    
+    def __init__(self, product, dona):
+        
+        self.product = product
+        self.dona = dona
+        
+        
+    def delivery(self):
+        
+        return self.product.deliver()
+    
+    
+    def total_price(self):
+        
+        product_total = self.dona * self.product.price
+        
+        shiping = self.product.shipping_price()
+        
+        return product_total + shiping
+    
+    
+    
+    def __str__(self):
+        
+        return (
+            f"Product: {self.product}\n"
+            f"Dona: {self.dona}\n"
+            f"Total: {self.total_price()}\n"
+            f"Status: {self.delivery()}"
+        )
+        
+
+class Cart(LoggerMixin):
+    
+    def __init__(self):
+        
+        self.items = []
+        
+        
+    def add_product(self, product, dona):
+        
+        if product.dona < dona:
+            
+            return "Dona kifoya nest!"
+        
+        item = CartItem(product, dona)
+        
+        self.items.append(item)
+    
+        
+        self.log(f"{product.name}, ba Korzina vorid shud!")
+        
+    
+    def show_cart(self):
+        
+        if len(self.items) == 0:
+            
+            return "Korzina Xoli!"
+        
+        for item in self.items:
+            
+            print(item)
+            
+            
+    def total_sum(self):
+        
+        total = 0 
+        
+        for item in self.items:
+            
+            total += item.total_price()
+        return total 
+        
+        
+        
+    def clear_cart(self):
+        
+        self.items.clear()
+        
+        self.log("Korzina Xoli shud!")
