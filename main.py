@@ -81,6 +81,63 @@ print(st.search_tovar("Seb"))
 
 print()
 
+# USER
+
+user1 = User("Said")
+
+
+# ADD TO CART
+
+user1.cart.add_items(p1, 2)
+user1.cart.add_items(p2, 1)
+user1.cart.add_items(p3, 5)
+
+print()
+
+
+# SHOW CART
+
+user1.cart.show_cart()
+
+print(user1.cart.total_sum())
+
+print()
+
+
+# CREATE ORDER
+
+order1 = Order(
+    user1,
+    user1.cart,
+    card
+)
+
+
+# SHOW ORDER
+
+order1.show_order()
+
+print()
+
+
+# PAY ORDER
+
+print(order1.pay_order())
+
+print()
+
+
+# DELIVER ORDER
+
+print(order1.delivery_order())
+
+print()
+
+
+# FINAL STATUS
+
+print(order1)
+
 
 # SAVE
 
@@ -119,8 +176,8 @@ print()
 
 cart = Cart()
 
-cart.add_product(p1, 3)
-cart.add_product(p2, 2)
+cart.add_items(p1, 3)
+cart.add_items(p2, 2)
 print()
 
 cart.show_cart()

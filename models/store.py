@@ -7,6 +7,8 @@ from models.product import (
     LoggerMixin,
 )
 
+from enum import Enum
+
 
 class Store(LoggerMixin):
 
@@ -169,6 +171,14 @@ class CartItem:
         return product_total + shiping
     
     
+    def shipping_price(self):
+        
+        if isinstance(self.product, PhysicalProduct):
+            
+            return self.shipping_price()
+        
+        return 0
+    
     
     def __str__(self):
         
@@ -187,7 +197,7 @@ class Cart(LoggerMixin):
         self.items = []
         
         
-    def add_product(self, product, dona):
+    def add_items(self, product, dona):
         
         if product.dona < dona:
             
@@ -228,3 +238,115 @@ class Cart(LoggerMixin):
         self.items.clear()
         
         self.log("Korzina Xoli shud!")
+        
+
+
+class OrderStatus(Enum):
+    
+    PENDING = "pending"
+    DELIVERED = "delivered"
+    SHIPPING = "shiping"
+    
+
+class User:
+    
+    def __init__(self, username):
+        
+        self.username = username
+        
+        self.cart = Cart()
+        
+        self.order = []
+        
+    
+    def __str__(self):
+        
+        return (
+            f"Username: {self.username}"
+            f"Order: {self.order}"
+        )
+        
+
+class Order(LoggerMixin):
+    
+    user_id = 1
+    
+    def __init__(self, user, cart, payment):
+        
+        self.id= Order.user_id
+        
+        Order.user_id += 1
+        
+        self.user = user
+        
+        self.items = cart.items.copy()
+        
+        self.payment = payment
+        
+        self.status = OrderStatus.PENDING
+        
+        
+    def total_sum(self):
+
+        total = 0
+
+        for item in self.items:
+
+            total += item.total_price()
+
+            if isinstance(item.product, PhysicalProduct):
+
+                total += item.product.shipping_price()
+
+        return total
+    
+    def pay_order(self):
+        
+        amount = self.total_sum()
+        
+        payment_result = self.payment.pay(amount)
+        
+        self.status = OrderStatus.PENDING
+        
+        self.log(f"Order #{self.id}, pardoxt shud!")
+        
+        return payment_result
+    
+    
+    def show_order(self):
+        
+        print(f"Order Id: {self.id}")
+        print(f"User: {self.user}")
+        print(f"Status: {self.status}")
+        
+        for item in self.items:
+            
+            print(item)
+            
+        print(f"TOTAL: {self.total_sum()}")
+        
+        
+    def delivery_order(self):
+        
+        self.status = OrderStatus.DELIVERED
+        
+        self.log(f"Order #{self.id}, delivered")
+        
+        return "Zakaz dostavka shud!"
+    
+    
+    def __str__(self):
+            
+        return (
+                f"Order: {self.id}\n"
+                f"User: {self.user.username}\n"
+                f"Status: {self.status.value}\n"
+                f"Items: {len(self.items)}\n"
+        )
+
+
+
+
+        
+        
+        

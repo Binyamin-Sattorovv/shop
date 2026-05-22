@@ -171,11 +171,10 @@ class PhysicalProduct(Product):
 
     def deliver(self):
 
-        shipping = self.weight * 10
 
         return (
             f"{self.name},dostavka shuda istodaast!\n"
-            f"Narxi dostavka: {shipping} somoni\n"
+            f"Narxi dostavka: {self.shipping_price()} somoni\n"
         )
 
     def to_dict(self):
@@ -194,7 +193,7 @@ class PhysicalProduct(Product):
         return self.weight * 10
 
 
-    def __str__(self):
+    def __str__(self): 
 
         return (
             f"PHYSICAL PRODUCT\n"
