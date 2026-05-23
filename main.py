@@ -1,7 +1,9 @@
-from models.product import *
-from models.payment import *
-from models.store import*
-
+from models.store import Store
+from models.product import DigitalProduct, PhysicalProduct, Product
+from models.payment import ClickPayment, CashPayment, CardPayment
+from models.user import User
+from models.order import Order
+from models.cart import Cart
 
 # STORE
 

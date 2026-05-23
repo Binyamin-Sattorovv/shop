@@ -1,12 +1,23 @@
 [
     {
-        "name": "seb",
-        "price": 3,
-        "dona": 90
+        "type": "digital",
+        "name": "Python Course",
+        "price": 1200,
+        "dona": 47,
+        "file_size": 1500
     },
     {
-        "name": "anor",
-        "price": 7,
-        "dona": 300
+        "type": "physical",
+        "name": "Laptop",
+        "price": 12000,
+        "dona": 3,
+        "weight": 3
+    },
+    {
+        "type": "physical",
+        "name": "Seb",
+        "price": 23,
+        "dona": 3,
+        "weight": 100
     }
 ]

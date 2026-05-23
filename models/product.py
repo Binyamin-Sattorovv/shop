@@ -1,4 +1,5 @@
-# LOGGER MIXIN
+from models.error import ProductNotFoundError, OutOfStockError, ErorofPrice
+
 
 class LoggerMixin:
 
@@ -25,6 +26,8 @@ class Product:
 
         Product.total_products += 1
 
+    # CLASSMETHOD
+
     @classmethod
     def from_dict(cls, data):
 
@@ -34,6 +37,8 @@ class Product:
             data["dona"]
         )
 
+    # STATICMETHOD
+
     @staticmethod
     def validate_discount(discount):
 
@@ -41,6 +46,8 @@ class Product:
             return "Discount xato!"
 
         return "Discount durust!"
+
+    # PRICE
 
     @property
     def price(self):
@@ -51,11 +58,14 @@ class Product:
     def price(self, new_price):
 
         if int(new_price) < 0:
+            
+            raise ErorofPrice("Dona kifoya nest!")
 
-            print("Narx naboyad manfi boshad!")
             return
 
         self.__price = int(new_price)
+
+    # DONA
 
     @property
     def dona(self):
@@ -67,10 +77,13 @@ class Product:
 
         if int(new_dona) < 0:
 
-            print("Dona naboyad manfi boshad!")
+            raise OutOfStockError("Dona naboyad manfi boshad!")
+
             return
 
         self.__dona = int(new_dona)
+
+    # TO DICT
 
     def to_dict(self):
 
@@ -81,15 +94,16 @@ class Product:
             "dona": self.dona
         }
 
+    # POLYMORPHISM
+
     def deliver(self):
 
         return "Action nest!"
     
     
     def shipping_price(self):
-
+        
         return 0
-    
 
     def __str__(self):
 
@@ -118,12 +132,13 @@ class DigitalProduct(Product):
 
         self.file_size = file_size
 
+    # OVERRIDE
+
     def deliver(self):
 
-        return (
-            f"{self.name} download shuda istodaast!\n"
-            f"File size: {self.file_size} MB"
-        )
+        return "delivered"
+
+    # TO DICT
 
     def to_dict(self):
 
@@ -135,11 +150,10 @@ class DigitalProduct(Product):
             "file_size": self.file_size
         }
         
-        
-    def shipping_price(self):
-
-        return 0
     
+    def shipping_price(self):
+        
+        return 0
 
     def __str__(self):
 
@@ -169,13 +183,14 @@ class PhysicalProduct(Product):
 
         self.weight = weight
 
+    # OVERRIDE
+
     def deliver(self):
 
-
-        return (
-            f"{self.name},dostavka shuda istodaast!\n"
-            f"Narxi dostavka: {self.shipping_price()} somoni\n"
-        )
+        return "delivered"
+        
+        
+    # TO DICT
 
     def to_dict(self):
 
@@ -187,13 +202,12 @@ class PhysicalProduct(Product):
             "weight": self.weight
         }
         
-        
     def shipping_price(self):
-
+        
         return self.weight * 10
-
-
-    def __str__(self): 
+    
+    
+    def __str__(self):
 
         return (
             f"PHYSICAL PRODUCT\n"
