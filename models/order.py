@@ -1,7 +1,4 @@
 from enum import Enum
-from models.product import LoggerMixin
-
-
 
 class OrderStatus(Enum):
     
@@ -11,7 +8,7 @@ class OrderStatus(Enum):
     
     
     
-class Order(LoggerMixin):
+class Order():
     
     order_id = 1
     
@@ -30,42 +27,6 @@ class Order(LoggerMixin):
         user.orders.append(self)
         
     
-    def total_sum(self):
-        
-        total = 0
-        
-        for item in self.items:
-            
-            total += item.total_price()
-            total += item.shipping_price()
-            
-        return total
-    
-    
-    def pay_order(self):
-        
-        for item in self.items:
-
-            item.product.dona -= item.dona
-    
-        amount = self.total_sum()
-        
-        payment_result = self.payment.pay(amount)
-        self.status = OrderStatus.PAID
-        
-        self.log(f"Order #{self.id} paid!")
-        
-        return payment_result      
-        
-        
-    def delivery_order(self):
-        
-        self.status = OrderStatus.DELIVERED
-        
-        self.log(f"Order #{self.id}, delivered!")
-        
-        return "Zakaz dostavka shud!"
-    
     
     def show_order(self):
         
@@ -76,8 +37,7 @@ class Order(LoggerMixin):
         for item in self.items:
             
             print(item)
-            
-        print(f"TOTAL: {self.total_sum()}, somoni")
+        
         
     
     def __str__(self):
@@ -89,3 +49,5 @@ class Order(LoggerMixin):
             f"Items: {len(self.items)}\n"
             f"Total: {self.total_sum()}, somoni\n"
         )
+        
+        

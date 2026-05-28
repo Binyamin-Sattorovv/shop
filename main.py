@@ -4,9 +4,12 @@ from models.payment import ClickPayment, CashPayment, CardPayment
 from models.user import User
 from models.order import Order
 from models.cart import Cart
+from service.store_service import StoreService
+from service.order_service import OrderService
+from service.cart_service import CartService
+
 
 # STORE
-
 st = Store("Mevaho")
 
 
@@ -22,14 +25,14 @@ p1 = DigitalProduct(
 p2 = PhysicalProduct(
     "Laptop",
     12000,
-    5,
-    3
+    567,
+    35
 )
 
 p3 = PhysicalProduct(
     "Seb",
     23,
-    3,
+    456,
     100
 )
 
@@ -39,12 +42,21 @@ p4 = Product(
     600,
 )
 
+p5 = Product(
+    "Bozi",
+    12,
+    456,
+)
+
 
 # ADD
 
-st.add_tovar(p1)
-st.add_tovar(p2)
-st.add_tovar(p3)
+StoreService.add_tovar(st, p1)
+StoreService.add_tovar(st, p2)
+StoreService.add_tovar(st, p3)
+StoreService.add_tovar(st, p3)
+StoreService.add_tovar(st, p5)
+
 
 
 print()
@@ -52,7 +64,7 @@ print()
 
 # LIST
 
-st.list_products()
+StoreService.list_products(st)
 
 print()
 
@@ -68,18 +80,18 @@ cash = CashPayment()
 
 # BUY
 
-print(st.buy("Laptop", 1, card))
+print(StoreService.buy(st, "Laptop", 1, card))
 
 print()
 
-print(st.buy("Python Course", 1, click))
+print(StoreService.buy(st, "Python Course", 1, click))
 
 print()
 
 
 # SEARCH
 
-print(st.search_tovar("Seb"))
+print(StoreService.search_tovar(st, "Seb"))
 
 print()
 
@@ -89,19 +101,20 @@ user1 = User("Said")
 
 
 # ADD TO CART
-
-user1.cart.add_items(p1, 2)
-user1.cart.add_items(p2, 1)
-user1.cart.add_items(p3, 5)
+CartService.add_items(user1.cart, p1, 2)
+CartService.add_items(user1.cart, p2, 3)
+CartService.add_items(user1.cart, p3, 4)
 
 print()
 
 
 # SHOW CART
 
-user1.cart.show_cart()
 
-print(user1.cart.total_sum())
+CartService.show_cart(user1.cart)
+print()
+
+print(CartService.total_sum(user1.cart))
 
 print()
 
@@ -124,40 +137,40 @@ print()
 
 # PAY ORDER
 
-print(order1.pay_order())
+print(OrderService.pay_order(order1))
 
 print()
 
 
 # DELIVER ORDER
 
-print(order1.delivery_order())
+print(OrderService.delivery_order(order1 ))
 
 print()
 
 
 # FINAL STATUS
 
-print(order1)
+print(OrderService.total_sum(order1))
 
 
 # SAVE
 
-st.save_products()
+StoreService.save_json(st)
 
 print()
 
 
 # LOAD
 
-st.load_products()
+StoreService.load_json(st)
 
 print()
 
 
 # LIST AGAIN
 
-st.list_products()
+StoreService.list_products(st)
 
 print()
 
@@ -177,15 +190,34 @@ print()
 
 
 cart = Cart()
+cart2 = Cart()
 
-cart.add_items(p1, 3)
-cart.add_items(p2, 2)
+CartService.add_items(user1.cart, p3, 1)
+CartService.add_items(user1.cart, p1, 3)
+CartService.add_items(user1.cart, p2, 2)
 print()
 
 cart.show_cart()
 print()
 
-print(cart.total_sum())
+print(CartService.total_sum(user1.cart))
 print()
+
+print(len(cart))
+print()
+
+cart3 = cart + cart2
+
+cart3.show_cart()
+
+for product in st:
+    
+    print(product)
+    
+
+print(p4 == p5)
+print()
+
+
 
 cart.clear_cart()

@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from models.product import Product
-from models.product import LoggerMixin
-
+from models.logger import logger
 
 @dataclass
 class CartItem:
@@ -38,25 +37,12 @@ class CartItem:
         )
         
     
-class Cart(LoggerMixin):
+class Cart():
     
     def __init__(self):
         
         self.items = []
         
-    
-    def add_items(self, product, dona):
-        
-        if product.dona < dona:
-            
-            return "Dona kifoya nest!"
-        
-        item = CartItem(product, dona)
-        
-        self.items.append(item)
-        
-        self.log(f"{product.name} aded to Korzina!")
-    
     
     def show_cart(self):
         
@@ -69,21 +55,24 @@ class Cart(LoggerMixin):
             print(item)
             
     
-    def total_sum(self):
-        
-        total = 0
-        
-        for item in self.items:
-            
-            total += item.final_price()
-        
-        return total
-
-    
-    
     def clear_cart(self):
         
         self.items.clear()
         
-        self.log("Korzina toza shud!")
+        logger.info("Korzina xoli shud!")
+        
+    def __add__(self, other):
+        
+        new_cart = Cart()
+        
+        new_cart.items = (
+            self.items + other.items
+        )
+        
+        return new_cart
+        
+        
+    def __len__(self):
+        
+        return len(self.items)
     

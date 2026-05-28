@@ -1,12 +1,6 @@
 from models.error import ProductNotFoundError, OutOfStockError, ErorofPrice
 
 
-class LoggerMixin:
-
-    def log(self, message):
-
-        print(f"[LOG]: {message}")
-
 
 # PRODUCT
 
@@ -43,6 +37,7 @@ class Product:
     def validate_discount(discount):
 
         if discount < 0 or discount > 100:
+            
             return "Discount xato!"
 
         return "Discount durust!"
@@ -60,7 +55,7 @@ class Product:
         if int(new_price) < 0:
             
             raise ErorofPrice("Dona kifoya nest!")
-
+        
             return
 
         self.__price = int(new_price)
@@ -104,6 +99,13 @@ class Product:
     def shipping_price(self):
         
         return 0
+    
+    
+    def __eq__(self, value):
+        
+        self.value = value
+        
+        return self.name.lower() == self.value.name.lower()
 
     def __str__(self):
 
@@ -217,3 +219,5 @@ class PhysicalProduct(Product):
             f"Dona: {self.dona}\n"
             f"Weight: {self.weight} KG\n"
         )
+        
+        
