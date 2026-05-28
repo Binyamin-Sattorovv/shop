@@ -7,7 +7,7 @@ from models.cart import Cart
 from service.store_service import StoreService
 from service.order_service import OrderService
 from service.cart_service import CartService
-
+from repositories.product_repository import ProductRepository
 
 # STORE
 st = Store("Mevaho")
@@ -56,6 +56,21 @@ StoreService.add_tovar(st, p2)
 StoreService.add_tovar(st, p3)
 StoreService.add_tovar(st, p3)
 StoreService.add_tovar(st, p5)
+
+ProductRepository.save(p1)
+ProductRepository.save(p2)
+ProductRepository.save(p3)
+
+
+products = ProductRepository.get_all()
+
+for product in products:
+    
+    print(product)
+
+print(ProductRepository.get_by_name("Seb"))
+
+ProductRepository.delete("Seb")
 
 
 
@@ -211,7 +226,7 @@ cart3 = cart + cart2
 cart3.show_cart()
 
 for product in st:
-    
+
     print(product)
     
 
