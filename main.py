@@ -13,27 +13,28 @@ from repositories.product_repository import ProductRepository
 st = Store("Mevaho")
 
 
+
 # PRODUCTS
 
 p1 = DigitalProduct(
     "Python Course",
     1200,
     50,
-    1500
+    1500,
 )
 
 p2 = PhysicalProduct(
     "Laptop",
     12000,
     567,
-    35
+    35,
 )
 
 p3 = PhysicalProduct(
     "Seb",
     23,
     456,
-    100
+    100,
 )
 
 p4 = Product(
@@ -48,6 +49,24 @@ p5 = Product(
     456,
 )
 
+ProductRepository.save(p1)
+ProductRepository.save(p2)
+ProductRepository.save(p3)
+ProductRepository.save(p4)
+print()
+
+ProductRepository.get_all()
+print()
+
+ProductRepository.get_by_name("Laptop")
+print()
+
+ProductRepository.delete("Laptop")
+print()
+
+
+
+
 
 # ADD
 
@@ -56,21 +75,6 @@ StoreService.add_tovar(st, p2)
 StoreService.add_tovar(st, p3)
 StoreService.add_tovar(st, p3)
 StoreService.add_tovar(st, p5)
-
-ProductRepository.save(p1)
-ProductRepository.save(p2)
-ProductRepository.save(p3)
-
-
-products = ProductRepository.get_all()
-
-for product in products:
-    
-    print(product)
-
-print(ProductRepository.get_by_name("Seb"))
-
-ProductRepository.delete("Seb")
 
 
 

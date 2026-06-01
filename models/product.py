@@ -1,35 +1,38 @@
-from models.error import ProductNotFoundError, OutOfStockError, ErorofPrice
+from models.error import (
+OutOfStockError, 
+ErorofPrice)
 
 
 
 # PRODUCT
 
-class Product:
-
+class Product():
+    
     total_products = 0
-
-    def __init__(self, name: str, price: int, dona: int):
-
+    
+    def __init__(self, name, price, dona):
+        
         self.name = name
-
+        
         self.__price = 0
         self.__dona = 0
-
+        
         self.price = price
         self.dona = dona
-
+        
         Product.total_products += 1
+        
 
-    # CLASSMETHOD
-
+    
     @classmethod
     def from_dict(cls, data):
-
+        
         return cls(
             data["name"],
             data["price"],
-            data["dona"]
+            data["dona"],
         )
+
 
     # STATICMETHOD
 
@@ -78,16 +81,6 @@ class Product:
 
         self.__dona = int(new_dona)
 
-    # TO DICT
-
-    def to_dict(self):
-
-        return {
-            "type": "product",
-            "name": self.name,
-            "price": self.price,
-            "dona": self.dona
-        }
 
     # POLYMORPHISM
 
@@ -101,11 +94,24 @@ class Product:
         return 0
     
     
+    def to_dict(self):
+        
+        return {
+            "type": "product",
+            "name": self.name,
+            "price": self.price,
+            "dona": self.dona,
+            
+        }
+    
+    
     def __eq__(self, value):
         
         self.value = value
         
         return self.name.lower() == self.value.name.lower()
+    
+
 
     def __str__(self):
 
@@ -121,18 +127,13 @@ class Product:
 # DIGITAL PRODUCT
 
 class DigitalProduct(Product):
-
-    def __init__(
-        self,
-        name,
-        price,
-        dona,
-        file_size
-    ):
-
+    
+    def __init__(self, name, price, dona, file_size):
+        
         super().__init__(name, price, dona)
-
+        
         self.file_size = file_size
+
 
     # OVERRIDE
 
@@ -172,17 +173,11 @@ class DigitalProduct(Product):
 # PHYSICAL PRODUCT
 
 class PhysicalProduct(Product):
-
-    def __init__(
-        self,
-        name,
-        price,
-        dona,
-        weight
-    ):
-
+    
+    def __init__(self, name, price, dona, weight):
+        
         super().__init__(name, price, dona)
-
+        
         self.weight = weight
 
     # OVERRIDE

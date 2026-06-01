@@ -1,13 +1,13 @@
 import sqlite3
 
-connection = sqlite3.connect(
-    "shop/database/shop.db" 
+connection  = sqlite3.connect(
+    "shop/database/shop.db"
 )
 
 cursor = connection.cursor()
 
-
-cursor.execute("""               
+cursor.execute(
+"""
 CREATE TABLE IF NOT EXISTS products(
     
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS products(
     dona INTEGER,
     product_type TEXT
 )
-""")
+"""
+)
 
 connection.commit()
-
