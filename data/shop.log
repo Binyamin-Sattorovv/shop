@@ -1551,3 +1551,19 @@ CREATE TABLE physical_products (
 2026-05-30 16:35:41,678 - INFO - Python Course, ba korzina vorid shud!
 2026-05-30 16:35:41,678 - INFO - Laptop, ba korzina vorid shud!
 2026-05-30 16:35:41,678 - INFO - Korzina xoli shud!
+2026-06-05 06:30:21,568 - INFO - Python Course, aded
+2026-06-05 06:30:21,568 - INFO - Laptop, aded
+2026-06-05 06:30:21,568 - INFO - Seb, aded
+2026-06-05 06:30:21,569 - INFO - Bozi, aded
+2026-06-05 06:30:21,569 - INFO - Laptop, sold!
+2026-06-05 06:30:21,569 - INFO - Python Course, sold!
+2026-06-05 06:30:21,569 - INFO - Python Course, ba korzina vorid shud!
+2026-06-05 06:30:21,569 - INFO - Laptop, ba korzina vorid shud!
+2026-06-05 06:30:21,569 - INFO - Seb, ba korzina vorid shud!
+2026-06-05 06:30:21,569 - INFO - Delivered
+2026-06-05 06:30:21,569 - INFO - Product saved!
+2026-06-05 06:30:21,570 - INFO - Product loaded!
+2026-06-05 06:30:21,570 - INFO - Seb, ba korzina vorid shud!
+2026-06-05 06:30:21,570 - INFO - Python Course, ba korzina vorid shud!
+2026-06-05 06:30:21,570 - INFO - Laptop, ba korzina vorid shud!
+2026-06-05 06:30:21,570 - INFO - Korzina xoli shud!
